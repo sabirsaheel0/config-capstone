@@ -5,7 +5,23 @@ pipeline{
         string(name: 'IMAGE_TAG', description: 'ENTER THE IMAGE TAG!')
     }
 
+
     stages {
+
+        stage('Cleanup Workspace'){
+            steps{
+                script{
+                    cleanWs()
+                }
+            }
+        }
+
+        stage("Checkout git repo"){
+            steps{
+                git branch: 'master', url: "https://github.com/sabirsaheel0/config-capstone.git"
+            }
+        }
+
         stage('Update backend image tag'){
             steps {
                 sh "sed -i 's/backend-capstone:.*/backend-capstone:${IMAGE_TAG}/g' manifest/backend-deployment.yaml"
